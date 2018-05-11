@@ -22,23 +22,27 @@ $ yum -y update
 $ yum -y install java-1.7.0-openjdk
 $ yum -y install java-1.7.0-openjdk-devel
 $ yum -y install mysql-server
-# yum -y install git
-# yum -y install genisoimage
+$ yum -y install git
+$ yum -y install genisoimage
 ```
 
 Set up Maven (3.0.5):
 
-    # wget http://www.us.apache.org/dist/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz
-    # tar -zxvf apache-maven-3.0.5-bin.tar.gz -C /usr/local
-    # cd /usr/local
-    # ln -s apache-maven-3.0.5 maven
-    # echo export M2_HOME=/usr/local/maven >> ~/.bashrc # or .zshrc or .profile
-    # echo export PATH=/usr/local/maven/bin:${PATH} >> ~/.bashrc # or .zshrc or .profile
-    # source ~/.bashrc
+```bash
+$ wget http://www.us.apache.org/dist/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz
+$ tar -zxvf apache-maven-3.0.5-bin.tar.gz -C /usr/local
+$ cd /usr/local
+$ ln -s apache-maven-3.0.5 maven
+$ echo export M2_HOME=/usr/local/maven >> ~/.bashrc # or .zshrc or .profile
+$ echo export PATH=/usr/local/maven/bin:${PATH} >> ~/.bashrc # or .zshrc or .profile
+$ source ~/.bashrc
+```
 
 Start the MySQL service:
 
-    $ service mysqld start
+```bash
+$ service mysqld start
+```
 
 ### Using jenv and/or pyenv for Version Management
 
@@ -47,10 +51,10 @@ CloudStack is built using Java and Python.  To make selection of these tools ver
 Following installation, execute the following commands to configure jenv and pyenv for use with CloudStack development:
 
 ```bash
-# pyenv install 2.7.11                                          # Install Python 2.7.11
-# pyenv virtualenv 2.7.11 cloudstack                            # Create a cloidstack virtualenv using Python 2.7.11
-# pip install -r <root CloudStack source tree>/requirements.txt # Install cloudstack Python dependencies
-# jenv add <path to JDK 1.7 installation>                       # Add Java7 to jenv
+$ pyenv install 2.7.11                                          # Install Python 2.7.11
+$ pyenv virtualenv 2.7.11 cloudstack                            # Create a cloidstack virtualenv using Python 2.7.11
+$ pip install -r <root CloudStack source tree>/requirements.txt # Install cloudstack Python dependencies
+$ jenv add <path to JDK 1.7 installation>                       # Add Java7 to jenv
 ```
 
 *N.B.* If you are running Linux, you may need to install additional packages to allow pyenv to build Python.
@@ -61,32 +65,44 @@ Following these steps, jenv and pyenv will use .java-version and .python-version
 
 You may get the source code from the repository hosted on Apache:
 
-    $ git clone https://git-wip-us.apache.org/repos/asf/cloudstack.git
+```bash
+$ git clone https://git-wip-us.apache.org/repos/asf/cloudstack.git
+```
 
 Or, you may fork the repository from the official Apache CloudStack mirror on [Github](https://github.com/apache/cloudstack)
 
 To checkout a specific branch, for example 4.4, do:
 
-    $ git fetch origin
-    $ git checkout -b 4.4 origin/4.4
+```bash
+$ git fetch origin
+$ git checkout -b 4.4 origin/4.4
+```
 
 ## Building
 
 Clean and build:
 
-    $ mvn clean install -P systemvm,developer
+```bash
+$ mvn clean install -P systemvm,developer
+```
 
 Clear old database (if any) and deploy the database schema:
 
-    $ mvn -P developer -pl developer -Ddeploydb
+```bash
+$ mvn -P developer -pl developer -Ddeploydb
+```
 
 Export the following variable if you need to run and debug the management server:
 
-    $ export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=500m -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n"
+```bash
+$ export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=500m -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n"
+```
 
 Start the management server:
 
-    $ mvn -pl :cloud-client-ui jetty:run
+```bash
+$ mvn -pl :cloud-client-ui jetty:run
+```
 
 If this works, you've successfully setup a single server Apache CloudStack installation.
 
@@ -99,22 +115,26 @@ field should be left blank which is defaulted to the ROOT domain.
 
 ## Building with non-redistributable plugins
 
-CloudStack supports several plugins that depend on libraries with distribution restrictions. 
-Because of this they are not included in the default build. Enable these additional plugins 
+CloudStack supports several plugins that depend on libraries with distribution restrictions.
+Because of this they are not included in the default build. Enable these additional plugins
 activate their respective profiles. For convenience adding -Dnoredist will enable all plugins
-that depend on libraries with distribution restrictions. The build procedure expects that the 
-required libraries are present in the maven repository. 
+that depend on libraries with distribution restrictions. The build procedure expects that the
+required libraries are present in the maven repository.
 
-The following procedure can be used to add the libraries to the local maven repository. Details 
+The following procedure can be used to add the libraries to the local maven repository. Details
 on obtaining the required libraries can be found in this file. Note that this will vary between
 releases of CloudStack
 
-    $ cd deps
-    $ ./install-non-oss.sh
+```bash
+$ cd deps
+$ ./install-non-oss.sh
+```
 
 To build all non redistributable components, add the noredist flag to the build command:
 
-    $ mvn clean install -P systemvm,developer -Dnoredist
+```bash
+$ mvn clean install -P systemvm,developer -Dnoredist
+```
 
 ## Packaging and Installation
 
@@ -124,13 +144,17 @@ Before packaging, please make sure you go through the "Building" section above. 
 
 To create debs install the following extra packages:
 
-    # apt-get -y install python-mysqldb
-    # apt-get -y install debhelper
+```bash
+$ apt-get -y install python-mysqldb
+$ apt-get -y install debhelper
+```
 
 Then:
 
-    $ mvn -P deps # -D noredist, for noredist as described in the "Building" section above
-    $ dpkg-buildpackage -uc -us
+```bash
+$ mvn -P deps # -D noredist, for noredist as described in the "Building" section above
+$ dpkg-buildpackage -uc -us
+```
 
 All the deb packages will be located one level down.
 
@@ -138,16 +162,20 @@ All the deb packages will be located one level down.
 
 To create rpms, install the following extra packages:
 
-    # yum -y install rpm-build
-    # yum -y install ws-commons-util
-    # yum -y instal gcc
-    # yum -y install glibc-devel
-    # yum -y install MySQL-python
+```bash
+$ yum -y install rpm-build
+$ yum -y install ws-commons-util
+$ yum -y instal gcc
+$ yum -y install glibc-devel
+$ yum -y install MySQL-python
+```
 
 Then:
 
-    $ cd packaging/centos63
-    $ package.sh
+```bash
+$ cd packaging/centos63
+$ package.sh
+```
 
 To create packages for noredist add the `-p noredist` option to the package script.
 All the rpm packages will be created in `dist/rpmbuild/RPMS/x86_64` directory.
