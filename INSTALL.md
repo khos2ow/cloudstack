@@ -14,15 +14,17 @@ was tested against a CentOS 6.5 x86_64 setup.
 
 Install tools and dependencies used for development:
 
-    $ yum install git ant ant-devel java-1.6.0-openjdk java-1.6.0-openjdk-devel
+```bash
+$ yum install git ant ant-devel java-1.6.0-openjdk java-1.6.0-openjdk-devel
     mysql mysql-server mkisofs gcc python MySQL-python openssh-clients wget
 
-    # yum -y update
-    # yum -y install java-1.7.0-openjdk
-    # yum -y install java-1.7.0-openjdk-devel
-    # yum -y install mysql-server
-    # yum -y install git
-    # yum -y install genisoimage
+$ yum -y update
+$ yum -y install java-1.7.0-openjdk
+$ yum -y install java-1.7.0-openjdk-devel
+$ yum -y install mysql-server
+# yum -y install git
+# yum -y install genisoimage
+```
 
 Set up Maven (3.0.5):
 
@@ -44,12 +46,12 @@ CloudStack is built using Java and Python.  To make selection of these tools ver
 
 Following installation, execute the following commands to configure jenv and pyenv for use with CloudStack development:
 
-'''
-  # pyenv install 2.7.11                                          # Install Python 2.7.11
-  # pyenv virtualenv 2.7.11 cloudstack                            # Create a cloidstack virtualenv using Python 2.7.11
-  # pip install -r <root CloudStack source tree>/requirements.txt # Install cloudstack Python dependencies
-  # jenv add <path to JDK 1.7 installation>                       # Add Java7 to jenv
-'''
+```bash
+# pyenv install 2.7.11                                          # Install Python 2.7.11
+# pyenv virtualenv 2.7.11 cloudstack                            # Create a cloidstack virtualenv using Python 2.7.11
+# pip install -r <root CloudStack source tree>/requirements.txt # Install cloudstack Python dependencies
+# jenv add <path to JDK 1.7 installation>                       # Add Java7 to jenv
+```
 
 *N.B.* If you are running Linux, you may need to install additional packages to allow pyenv to build Python.
 
